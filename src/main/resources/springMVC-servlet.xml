@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context.xsd
+        http://www.springframework.org/schema/mvc
+        https://www.springframework.org/schema/mvc/spring-mvc.xsd">
+    <context:component-scan base-package="com.jzw.controller"></context:component-scan>
+
+    <!-- 注解驱动-->
+    <mvc:annotation-driven conversion-service="conversionService"></mvc:annotation-driven>
+
+    <!-- 释放静态资源  js  css 图片 -->
+    <mvc:default-servlet-handler></mvc:default-servlet-handler>
+
+    <!--  配置自定义的工具类-->
+    <bean id="conversionService" class="org.springframework.format.support.FormattingConversionServiceFactoryBean">
+        <property name="converters">
+            <set>
+                <bean  class="com.jzw.utils.DateConverter"></bean>
+            </set>
+        </property>
+    </bean>
+    <!--映射处理器
+
+    bean的名字 和 访问url 匹配   默认配置了该映射处理器
+    -->
+    <bean id="beanNameUrlHandlerMapping"
+          class="org.springframework.web.servlet.handler.BeanNameUrlHandlerMapping"></bean>
+
+    <!--  配置视图解析器   在某个位置下  通过视图名 获取视图文件，加载 响应
+    /WEB-INF/jsp/userlist.jsp
+
+    -->
+    <bean id="internalResourceViewResolver"
+          class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <property name="prefix"  value="/WEB-INF/jsp/"></property>   <!-- 访问资源的前缀-->
+        <property name="suffix" value=".jsp"></property>  <!-- 访问资源的后缀-->
+
+        <!-- 前缀+视图名+后缀
+         /WEB-INF/jsp/userlist.jsp
+         -->
+    </bean>
+
+    <!-- 文件上传解析器 -->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="maxUploadSize" value="2097152"> </property>
+        <property name="defaultEncoding" value="utf-8"></property>
+
+    </bean>
+</beans>

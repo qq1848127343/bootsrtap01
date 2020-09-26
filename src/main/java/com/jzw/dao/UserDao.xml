@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jzw.dao.UserDao">
+	<resultMap id="Usermap" type="User">
+
+	</resultMap>
+	<select id="queryUserbyCond" parameterType="User"
+			resultMap="Usermap">
+		select * from User
+		<where>
+			<if test="name!=null"> and name like concat('%',#{name},'%')</if>
+		</where>
+	</select>
+
+
+	<select id="querycountUserbyCond" parameterType="User"
+			resultType="int">
+		select count(*) from User
+		<where>
+			<if test="name!=null"> and name like concat('%',#{name},'%')</if>
+		</where>
+	</select>
+
+	<select id="queryUserbyid" parameterType="int"
+			resultMap="Usermap">
+		select * from User where id=#{id}
+
+	</select>
+
+	<insert id="tianJia" parameterType="User">
+		insert into User values(#{id},#{name},#{uname},
+		#{pwd},#{sex})
+	</insert>
+
+	<delete id="shanChu" parameterType="int">
+		delete from User where id=#{id}
+	</delete>
+
+	<update id="xiuGai" parameterType="User">
+		update User set name=#{name},uname=#{uname},
+		pwd=#{pwd},sex=#{sex}
+		where id=#{id}
+	</update>
+
+	<select id="dl" parameterType="User"
+			resultMap="Usermap">
+		select * from User where uname=#{uname} and pwd=#{pwd}
+
+	</select>
+
+</mapper>
